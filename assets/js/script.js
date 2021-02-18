@@ -48,7 +48,7 @@ function removeGui(sketch){
 }
 
 
-// add the sketch in the sketchs buttons
+// add the sketch in the sketchs buttons 
 function addSketchtoPage(obj) {
     let div = document.getElementById('menuRow');
     div.innerHTML += '<button data-value="' + obj.nom + '" onclick = "setCanvas(this)" > ' + obj.nom + '</button>';
