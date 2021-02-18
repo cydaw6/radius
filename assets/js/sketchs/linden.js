@@ -60,7 +60,7 @@ let lindensketch = function(p){
         p.pg = p.createGraphics(p.windowWidth, p.windowHeight);
         p.background(0,0,0,0);
 
-        /* Test */
+        /* Test 
         let obj = {
             valueA : 0.25,
             valueB : 1.25,	
@@ -69,7 +69,9 @@ let lindensketch = function(p){
             }
             
         }
+        */
 
+        /*
         let obj1=  {color:'#ff00ff'};
 
         controlKit.addPanel({label: "L-system",fixed: false, position: [0,0]})
@@ -77,6 +79,7 @@ let lindensketch = function(p){
         .addNumberInput(obj,'valueB')
         .addFunctionPlotter(obj,'func')
         .addColor(obj1,'color',{colorMode:'hex'});
+        */
 
         //
         //p.stroke(0, 0, 0, 255);
