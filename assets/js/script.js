@@ -1,7 +1,10 @@
 
+// Liste des sketchs
 let allSketchs = [];
+// Sketch courant, visible
 let activeSketch;
 
+/*    remplace le sketch du canva par celui entré en parametre    */
 function setCanvas(currDiv) {
     allSketchs.forEach(sk => {
         if (sk.nom == currDiv.getAttribute('data-value')) {
@@ -11,22 +14,39 @@ function setCanvas(currDiv) {
                     activeSketch.hideGui();
                     p5.prototype.removeGui();
                 }
+                // Enlève l'ui du sketch à effacer
+                removeGui(activeSketch);
                 activeSketch.remove();
             }
-            // change page tab 
+            // Met à jour le nom de la fenêtres
             let title = document.getElementById("titlep");
             title.innerHTML = "Radius - " + sk.nom;
+
             // remove intro img if there
             try{
                 document.getElementById("fimage").remove();
             }catch(error){
 
             }
-            // replace sketch
+            // remplace le sketch du canva
             activeSketch = new p5(sk.sketch);
         }
     });
 }
+
+/*    Enlève l'ui du sketch à effacer     */
+function removeGui(sketch){
+    for (let index = 0; index < controlKit._panels.length; index++) {
+        const element = controlKit._panels[index];
+        if(element._label == sketch.sketchName){
+            console.log(controlKit._panels);
+            controlKit._panels[index].disable();
+            controlKit._panels.splice(index,1);
+            controlKit.update();
+        }
+    }
+}
+
 
 // add the sketch in the sketchs buttons
 function addSketchtoPage(obj) {
@@ -37,8 +57,8 @@ function addSketchtoPage(obj) {
 
 // print intro img
 $(document).ready(function(){
-    //activeSketch = new p5(allSketchs[allSketchs.length-1].sketch);
-    activeSketch = new p5(lindensketch);
+    activeSketch = new p5(allSketchs[allSketchs.length-1].sketch);
+    //activeSketch = new p5(lindensketch);
     /*
     let div = document.getElementById('myContainer');
     div.innerHTML += '<img id="fimage" style="max-width: 1500px !important;" src="./assets/img/first.png" class="img-fluid" alt="Responsive image"></img>';

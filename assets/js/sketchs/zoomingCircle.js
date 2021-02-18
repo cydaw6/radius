@@ -8,23 +8,16 @@ let sketch4 = function(p){
   p.lineList = [];
   p.circleList = [];
   p.rayon;
-  let gui;
-  let params = {
-    frameRate : 25,
-    frameRateMin : 1,
-    frameRateMax : 1000,
-    angleIncrement: 0.01,
-    angleIncrementMin: -360,
-    angleIncrementMax: 360,
-    
-  }
-  p.hideGui = function(){
-    gui.hide();
+
+  p.sketchName = "Circles";
+  let guiExist = false;
+  let params2 = {
+    frameRate: {value:25,range:[1,80]}, //number of points
+    angleIncrement: {value:0.01,range:[-360,360]},
 }
 
   p.setup = function() {
     p.leftmenuEndpositionX = document.getElementById('allcontent').getBoundingClientRect().right;
-        
     p.w = p.windowWidth - p.leftmenuEndpositionX;
     p.h = p.windowHeight;
     p.myCanvas = p.createCanvas(p.w, p.h);
@@ -36,10 +29,13 @@ let sketch4 = function(p){
     p.circleList = [];
     p.rayon = 0;
 
-    if(gui == null){
-      gui = p.createGui(this, "Options");
-      gui.addObject(params);
-  }
+   // Gui
+   if(!guiExist){
+      controlKit.addPanel({label: p.sketchName,fixed: false, position: [0,0], width: 260})
+      .addSlider(params2.frameRate, 'value','range',{label: "Frame rate"})
+      .addSlider(params2.angleIncrement,'value','range',{label:"Angle"});
+      guiExist = true;
+    }
     
     for (let i = 0; i < p.NUMBER_OF_RAYS; i++) {
       //random(255),random(255),random(255)
@@ -52,12 +48,20 @@ let sketch4 = function(p){
       p.rayon+=1300/12;
     }
     p.rayon = 0;
+
+
   }
 
   p.draw = function() {
 
+    if(p.keyIsPressed === true){
+      if(p.key == 'r' ){
+          console.log('r');
+          p.setup();
+      } 
+    }
    
-    p.frameRate(params.frameRate);
+    p.frameRate(params2.frameRate.value);
     p.background(0);
     p.translate(p.width/2, p.height/2);
     let i = 0;
@@ -77,33 +81,21 @@ let sketch4 = function(p){
       c.draw();
       c.updateRadius(p.rayon);
     });
-
-    p.keyReleased = function() { 
-      if(new String(p.key)[0] == new String("s")[0]){
-       var today = new Date();
-       var yyyy = today.getFullYear();
-       let thedate = yyyy + '' + today.getMonth() + 1 + "" + today.getDate() + '_'+  today.getHours() + ''+today.getMinutes()+''+today.getSeconds();
-       p.save("radius_"+thedate.toString()+".png");
-      }
-   } 
     
     p.rayon+=0.5;
-    p.angle += params.angleIncrement;
+    p.angle += params2.angleIncrement.value;
   }
 
   class Line{
-  
     constructor(x1, x2){
-    this.x1 = x1;
-    this.x2 = x2;
+      this.x1 = x1;
+      this.x2 = x2;
     }
     
     draw(){
       p.line(this.x1, 0, this.x2, 0);
     }
-    
   }
-
 
   class GrownCircle
   {
@@ -127,6 +119,33 @@ let sketch4 = function(p){
       p.strokeWeight(4);
       p.circle(this.posX,this.posY,this.radius);
     }
+  }
+
+  /** Inherent function to sketch on radius */
+  p.keyReleased = function() { 
+      if(new String(p.key)[0] == new String("s")[0]){
+      var today = new Date();
+      var yyyy = today.getFullYear();
+      let thedate = yyyy + '' + today.getMonth() + 1 + "" + today.getDate() + '_'+  today.getHours() + ''+today.getMinutes()+''+today.getSeconds();
+      p.save("radius_"+thedate.toString()+".png");
+      }
+  }
+
+  p.delete = function(){
+      p.remove();
+  }
+
+  p.windowResized = function() {
+      p.leftmenuEndpositionX = document.getElementById('allcontent').getBoundingClientRect().right;
+          
+      p.w = p.windowWidth - p.leftmenuEndpositionX;
+      p.h = p.windowHeight;
+      p.resizeCanvas(p.windowWidth - p.leftmenuEndpositionX, p.windowHeight);
+      p.myCanvas.position(p.leftmenuEndpositionX, 0, 'fixed');
+      
+      p.background(0);
+      p.txtprinted = false;
+      
   }
 }
 

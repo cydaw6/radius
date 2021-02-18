@@ -1,16 +1,12 @@
 
 let lindensketch = function(p){
-
+    p.sketchName = "L-system";
     p.baseFPS = 60;
     
     p.colorIncrement = 1;
 
-
-    
-
     p.scene;
     p.colors = [];
-    let gui = null;
 
     p.nloops = 10;
     p.grammaire = [];
@@ -42,11 +38,6 @@ let lindensketch = function(p){
        
     }
 
-
-    p.hideGui = function(){
-        gui.hide();
-    }
-
     p.delete = function(){
         p.remove();
     }
@@ -75,16 +66,21 @@ let lindensketch = function(p){
             valueB : 1.25,	
             func : function(x,y){
                 return Math.sin(x * this.valueA) * Math.cos(y * this.valueB);
-            },
+            }
+            
         }
 
-        controlKit.addPanel({fixed: false, position: [0,0]})
+        let obj1=  {color:'#ff00ff'};
+
+        controlKit.addPanel({label: "L-system",fixed: false, position: [0,0]})
         .addNumberInput(obj,'valueA')
         .addNumberInput(obj,'valueB')
-        .addFunctionPlotter(obj,'func');
+        .addFunctionPlotter(obj,'func')
+        .addColor(obj1,'color',{colorMode:'hex'});
+
         //
 
-        console.log(controlKit);
+        
 
         //p.stroke(0, 0, 0, 255);
 
@@ -278,12 +274,7 @@ let lindensketch = function(p){
         p.remove();
     }
     
-    p.hideGui = function(){
-        if(gui){
-            gui.hide();
-        }
-        
-    }
+    
 
 }
 

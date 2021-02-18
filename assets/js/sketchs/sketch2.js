@@ -1,12 +1,25 @@
 let sketch2 = function(p){
   p.w;
-  p.h; 
+  p.h;
+
+  p.sketchName = "Vectors and forces";
+  let guiExist = false;
+  let params2 = {
+      nMover : {value:433,range:[1,1500]},
+      velocityLimit: {value:5,range:[-50,150]},
+      strokeWeight: {value:5,range:[0,50]},
+      bodyRadius: {value:85,range:[1,100]},
+      mass: {value:32,range:[-10,100]},
+      vectorMagnitude: {value:7.5,range:[-100,100]},
+      strokeColor: {color:'#ffffff'},
+      bodyColor:   {color:'#3865ff'},
+      Keybinds: ['restart = r'],
+  }
 
   p.hNMover = 10;
   p.list = [];
   p.world;
 
-  let gui;
   let params = {
       nMover : 10,
       nMoverMin: 1,
@@ -49,20 +62,7 @@ let sketch2 = function(p){
       
   }
 
-  p.hideGui = function(){
-    gui.hide();
-}
-  p.delete = function(){
-    p.remove();
-  }
-  p.keyReleased = function() { 
-    if(new String(p.key)[0] == new String("s")[0]){
-     var today = new Date();
-     var yyyy = today.getFullYear();
-     let thedate = yyyy + '' + today.getMonth() + 1 + "" + today.getDate() + '_'+  today.getHours() + ''+today.getMinutes()+''+today.getSeconds();
-     p.save("radius_"+thedate.toString()+".png");
-    }
- } 
+
   p.setup = function(){
     p.world = new World();
     p.leftmenuEndpositionX = document.getElementById('allcontent').getBoundingClientRect().right;
@@ -72,16 +72,28 @@ let sketch2 = function(p){
     p.myCanvas = p.createCanvas(p.w, p.h);
     p.myCanvas.parent('canva');
     p.myCanvas.position(p.leftmenuEndpositionX, 0, 'fixed');
-    hNMover = params.nMover;
-    p.world.addMovers(params.nMover);
-    if(gui == null){
-      gui = p.createGui(this, "Options");
-      gui.addObject(params);
+    hNMover = params2.nMover.value;
+    p.world.addMovers(params2.nMover.value);
+
+    // Gui
+    if(!guiExist){
+      controlKit.addPanel({label: "Vectors and forces",fixed: false, position: [0,0], width: 260})
+      .addSlider(params2.nMover,'value','range',{label:"Balls"})
+      .addSlider(params2.velocityLimit,'value','range',{label:"Velocity"})
+      .addSlider(params2.strokeWeight,'value','range',{label:"StrokeWeight"})
+      .addSlider(params2.bodyRadius,'value','range',{label:"BodyRadius"})
+      .addSlider(params2.mass,'value','range',{label:"Mass"})
+      .addSlider(params2.vectorMagnitude,'value','range',{label:"VectorMagnitude"})
+      .addColor(params2.strokeColor,'color',{colorMode:'hex', label:"Stroke"})
+      .addColor(params2.bodyColor,'color',{colorMode:'hex', label:"Body"});
+      guiExist = true;
     }
+
+
   }
 
   p.draw = function(){
-    if(hNMover != params.nMover){
+    if(hNMover != params2.nMover.value){
       p.setup();
   }
     p.background(0);
@@ -105,12 +117,12 @@ let sketch2 = function(p){
     }
     
      applyForce(force){
-      let f = p5.Vector.div(force,params.mass);
+      let f = p5.Vector.div(force,params2.mass.value);
       this.acceleration.add(f);
     }
     
      edges(){
-      let mheight = (params.bodyRadius+params.strokeWeight)/2;
+      let mheight = (params2.bodyRadius.value + params2.strokeWeight.value)/2;
       if((this.location.x+mheight >= p.w)){
         this.location.x = p.width-mheight;
         this.velocity.x *= -1;
@@ -133,10 +145,10 @@ let sketch2 = function(p){
     }
     
     draw(){
-      let mHeight = (params.bodyRadius+params.strokeWeight);
-      p.stroke(params.strokeColorR,params.strokeColorG,params.strokeColorB);
-      p.strokeWeight(params.strokeWeight);
-      p.fill(params.bodyColorR, params.bodyColorG, params.bodyColorB);
+      let mHeight = (params2.bodyRadius.value +  params2.strokeWeight.value);
+      p.stroke(params2.strokeColor.color);
+      p.strokeWeight(params2.strokeWeight.value);
+      p.fill(params2.bodyColor.color);
       p.ellipse(this.location.x, this.location.y,mHeight, mHeight);
     }
   }
@@ -172,7 +184,7 @@ let sketch2 = function(p){
           if(p.mouseIsPressed == true){
             let mouse = p.createVector(p.mouseX, p.mouseY);
             mouse.sub(m.location);
-            mouse.setMag(params.vectorMagnitude);
+            mouse.setMag(params2.vectorMagnitude.value);
             m.applyForce(mouse);
           }
           m.updatee();
@@ -181,6 +193,33 @@ let sketch2 = function(p){
           });
         } 
       }
+  }
+
+  /** Inherent function to sketch on radius */
+  p.keyReleased = function() { 
+      if(new String(p.key)[0] == new String("s")[0]){
+      var today = new Date();
+      var yyyy = today.getFullYear();
+      let thedate = yyyy + '' + today.getMonth() + 1 + "" + today.getDate() + '_'+  today.getHours() + ''+today.getMinutes()+''+today.getSeconds();
+      p.save("radius_"+thedate.toString()+".png");
+      }
+  }
+
+  p.delete = function(){
+      p.remove();
+  }
+
+  p.windowResized = function() {
+      p.leftmenuEndpositionX = document.getElementById('allcontent').getBoundingClientRect().right;
+          
+      p.w = p.windowWidth - p.leftmenuEndpositionX;
+      p.h = p.windowHeight;
+      p.resizeCanvas(p.windowWidth - p.leftmenuEndpositionX, p.windowHeight);
+      p.myCanvas.position(p.leftmenuEndpositionX, 0, 'fixed');
+      
+      
+      p.txtprinted = false;
+      //p.background(255);
   }
   
 }
