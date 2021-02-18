@@ -79,15 +79,8 @@ let lindensketch = function(p){
         .addColor(obj1,'color',{colorMode:'hex'});
 
         //
-
-        
-
         //p.stroke(0, 0, 0, 255);
 
-        if(gui == null){
-            //gui = p.createGui(this, "Parameters");
-            //gui.addObject(params);
-        }
         
 
 
