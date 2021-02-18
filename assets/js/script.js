@@ -57,8 +57,8 @@ function addSketchtoPage(obj) {
 
 // print intro img
 $(document).ready(function(){
-    activeSketch = new p5(allSketchs[allSketchs.length-1].sketch);
-    //activeSketch = new p5(lindensketch);
+    //activeSketch = new p5(allSketchs[allSketchs.length-1].sketch);
+    activeSketch = new p5(lindensketch);
     /*
     let div = document.getElementById('myContainer');
     div.innerHTML += '<img id="fimage" style="max-width: 1500px !important;" src="./assets/img/first.png" class="img-fluid" alt="Responsive image"></img>';
