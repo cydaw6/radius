@@ -64,7 +64,7 @@ let sketch5 = function(p){
             p.rotate(p.r);
             p.strokeWeight(params.weight.value);
             p.point(x+(params.originX/2), y+(params.originY/2));
-            //line(x+300, y+300, 300, 300); 
+            // line(x+300, y+300, 300, 300;
         }
             p.r+=0.1;
     }
